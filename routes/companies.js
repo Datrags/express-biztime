@@ -20,14 +20,20 @@ router.get("/:code", async (req, res, next) => {
         const {code} = req.params;
         const results = await db.query( `SELECT * FROM companies 
                                    WHERE code=$1`, [code]);
-    
-        return res.json({company: results.rows});
+        
+        const invRes = await db.query(`SELECT * FROM invoices
+                                       WHERE comp_code=$1`,[code])
+        const comp = results.rows[0];
+        comp.invoices = invRes.rows;
+        return res.json({company: comp});
     } 
     catch(e) {
         next(e);
     }
 
 });
+
+
 
 router.post("/", async (req, res, next) => {
     try {

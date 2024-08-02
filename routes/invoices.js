@@ -26,6 +26,7 @@ router.get("/:id", async (req, res, next) => {
     }
 });
 
+
 router.post("/", async (req, res, next) => {
     try {
         const {comp_code, amt} = req.body;
